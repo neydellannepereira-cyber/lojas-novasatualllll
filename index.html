@@ -896,7 +896,7 @@
                     <form id="formLoja">
                         <!-- DADOS DA LOJA -->
                         <div class="form-section">
-                            <div class="form-section-title">📍 Dados da Loja</div>
+                            <div class="form-section-title">🏢 Dados da Loja</div>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Código da Filial <span class="required">*</span></label>
@@ -960,7 +960,7 @@
 
                         <!-- ESTRUTURA -->
                         <div class="form-section">
-                            <div class="form-section-title">🏗️ Estrutura Especial</div>
+                            <div class="form-section-title">🗂️ Estrutura Especial</div>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>💉 Sala de Vacina <span class="required">*</span></label>
@@ -1013,7 +1013,7 @@
 
                         <!-- RESPONSÁVEL -->
                         <div class="form-section">
-                            <div class="form-section-title">✍️ Responsável</div>
+                            <div class="form-section-title">✏️ Responsável</div>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Nome do Responsável pelo Preenchimento <span class="required">*</span></label>
@@ -1034,7 +1034,7 @@
                 <div class="card-header">
                     <h2>📋 Lojas Cadastradas</h2>
                     <div class="toolbar-actions">
-                        <select id="filtroMesVendas" class="filtro-mes" onchange="filtrarPorMes()">
+                        <select id="filtroMesVendas" class="filtro-mes" onchange="filtrarLojas()">
                             <option value="">📅 Todos os meses</option>
                         </select>
                         <button class="btn btn-secondary" onclick="carregarLojas()">🔄 Atualizar</button>
@@ -1065,7 +1065,7 @@
                 <div class="card-header">
                     <h2>👥 Lojas para Planejamento de Quadro</h2>
                     <div class="toolbar-actions">
-                        <select id="filtroMesRH" class="filtro-mes" onchange="filtrarPorMes()">
+                        <select id="filtroMesRH" class="filtro-mes" onchange="filtrarLojas()">
                             <option value="">📅 Todos os meses</option>
                         </select>
                         <button class="btn btn-secondary" onclick="carregarLojas()">🔄 Atualizar</button>
@@ -1272,6 +1272,64 @@
                 ],
                 responsavel: "Neyde",
                 created_at: "2026-01-05T12:00:05.000Z"
+            },
+            {
+                id: "1737545835",
+                codigo_filial: "FL XXX",
+                nome_loja: "FREI CALIXTO",
+                cidade_estado: "PORTO SEGURO - PS",
+                perfil: "BAIRRO",
+                tamanho: "G",
+                horario: "07:00 - 23:00",
+                checkouts: 6,
+                data_inauguracao: "2026-03-31",
+                gerente_regional: "JEFERSON",
+                gerente_distrital: "N/A",
+                sala_vacina: false,
+                tele: false,
+                drive: false,
+                quadro_pessoas: [
+                    { funcao: "BALC. MEDICAMENTOS", quantidade: 5 },
+                    { funcao: "VEND. PERFUMARIA", quantidade: 4 },
+                    { funcao: "OPERADOR CAIXA", quantidade: 9 },
+                    { funcao: "OPERADOR CAIXA(LIDER)", quantidade: 1 },
+                    { funcao: "GERENTE", quantidade: 1 },
+                    { funcao: "SUBGERENTE", quantidade: 1 },
+                    { funcao: "FARMACÊUTICO", quantidade: 2 },
+                    { funcao: "AUXILIAR DE LIMPEZA", quantidade: 1 },
+                    { funcao: "FISCAL DE LOJA/FISCAL PREV PERDAS", quantidade: 1 },
+                    { funcao: "REPOSITOR MERCADORIA", quantidade: 1 }
+                ],
+                responsavel: "Neyde",
+                created_at: "2026-01-22T12:00:00.000Z"
+            },
+            {
+                id: "1737545836",
+                codigo_filial: "FL XXX",
+                nome_loja: "MARAÍZES",
+                cidade_estado: "MARAÍZES - VIT",
+                perfil: "CENTRO",
+                tamanho: "G",
+                horario: "07:00 - 22:00",
+                checkouts: 5,
+                data_inauguracao: "2026-04-08",
+                gerente_regional: "LUCIMAR",
+                gerente_distrital: "N/A",
+                sala_vacina: false,
+                tele: false,
+                drive: false,
+                quadro_pessoas: [
+                    { funcao: "BALC. MEDICAMENTOS", quantidade: 4 },
+                    { funcao: "VEND. PERFUMARIA", quantidade: 3 },
+                    { funcao: "OPERADOR CAIXA", quantidade: 5 },
+                    { funcao: "OPERADOR CAIXA(LIDER)", quantidade: 1 },
+                    { funcao: "GERENTE FARMA", quantidade: 1 },
+                    { funcao: "SUBGERENTE FARMA", quantidade: 1 },
+                    { funcao: "FARMACÊUTICO", quantidade: 1 },
+                    { funcao: "AUXILIAR DE LIMPEZA", quantidade: 1 }
+                ],
+                responsavel: "Neyde",
+                created_at: "2026-01-22T12:00:01.000Z"
             }
         ];
 
@@ -1515,7 +1573,8 @@
             }
         }
 
-        function atualizarFiltrosMes() {
+        function atualizarFiltros() {
+            // Atualizar filtro de mês
             const meses = new Set();
             lojas.forEach(loja => {
                 const mesCadastro = obterMesCadastro(loja.created_at);
@@ -1524,11 +1583,11 @@
 
             const mesesOrdenados = Array.from(meses).sort().reverse();
             
-            const optionsHTML = '<option value="">📅 Todos os meses</option>' + 
+            const optionsMesHTML = '<option value="">📅 Todos os meses</option>' + 
                 mesesOrdenados.map(mes => `<option value="${mes}">${formatarMesExibicao(mes)}</option>`).join('');
             
-            document.getElementById('filtroMesVendas').innerHTML = optionsHTML;
-            document.getElementById('filtroMesRH').innerHTML = optionsHTML;
+            document.getElementById('filtroMesVendas').innerHTML = optionsMesHTML;
+            document.getElementById('filtroMesRH').innerHTML = optionsMesHTML;
         }
 
         function obterMesCadastro(dataISO) {
@@ -1545,7 +1604,7 @@
             return `${nomesMeses[parseInt(mes) - 1]}/${ano}`;
         }
 
-        function filtrarPorMes() {
+        function filtrarLojas() {
             renderizarLojas();
         }
 
@@ -1553,13 +1612,13 @@
             const containerVendas = document.getElementById('listaLojasVendas');
             const containerRH = document.getElementById('listaLojasRH');
             
-            // Atualizar opções dos filtros
-            atualizarFiltrosMes();
+            // Atualizar filtros
+            atualizarFiltros();
 
             if (lojas.length === 0) {
                 const emptyHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">📭</div>
+                        <div class="empty-state-icon">🔭</div>
                         <h3>Nenhuma loja cadastrada</h3>
                         <p>Comece cadastrando uma nova loja no formulário acima.</p>
                     </div>
@@ -1569,18 +1628,18 @@
                 return;
             }
 
-            // Obter filtro selecionado
-            const filtroVendas = document.getElementById('filtroMesVendas').value;
-            const filtroRH = document.getElementById('filtroMesRH').value;
+            // Obter filtros selecionados
+            const filtroMesVendas = document.getElementById('filtroMesVendas').value;
+            const filtroMesRH = document.getElementById('filtroMesRH').value;
 
             // Agrupar lojas por mês
             const lojasPorMes = agruparPorMes(lojas);
 
             // Renderizar para Vendas (com botão excluir)
-            containerVendas.innerHTML = renderizarLojasAgrupadas(lojasPorMes, true, filtroVendas);
+            containerVendas.innerHTML = renderizarLojasAgrupadas(lojasPorMes, true, filtroMesVendas);
             
             // Renderizar para RH (sem botão excluir)
-            containerRH.innerHTML = renderizarLojasAgrupadas(lojasPorMes, false, filtroRH);
+            containerRH.innerHTML = renderizarLojasAgrupadas(lojasPorMes, false, filtroMesRH);
         }
 
         function agruparPorMes(listaLojas) {
@@ -1608,7 +1667,7 @@
             let html = '';
 
             for (const [mes, lojasDoMes] of Object.entries(lojasPorMes)) {
-                // Se há filtro e não é este mês, pular
+                // Se há filtro de mês e não é este mês, pular
                 if (filtroMes && filtroMes !== mes) continue;
 
                 const totalPessoas = lojasDoMes.reduce((acc, loja) => {
@@ -1631,7 +1690,7 @@
                     <div class="empty-state">
                         <div class="empty-state-icon">🔍</div>
                         <h3>Nenhuma loja encontrada</h3>
-                        <p>Não há lojas cadastradas no mês selecionado.</p>
+                        <p>Não há lojas cadastradas com os filtros selecionados.</p>
                     </div>
                 `;
             }
